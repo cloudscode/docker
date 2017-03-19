@@ -1,0 +1,41 @@
+version: "2"
+services:
+  member:
+    build: '../docker-member/'
+    hostname: member  
+    ports:
+      - 8084:8084
+      - 8904:8904
+  server:
+    build: '../docker-server/'
+    hostname: server  
+    ports:
+      - 8085:8085
+      - 8905:8905
+  order:
+    build: '../docker-order/'
+    hostname: order  
+    ports:
+      - 8083:8083
+      - 8903:8903
+    depends_on:
+      - "member"
+  product:
+    build: '../docker-product/'
+    hostname: product  
+    ports:
+      - 8082:8082
+      - 8902:8902
+    depends_on:
+      - "member"
+      - "server"
+      - "order"
+  rest:
+    build: '../docker-rest/'
+    hostname: rest  
+    ports:
+      - 8081:8081
+      - 8901:8901
+    depends_on:
+      - "order"
+      - "product"
